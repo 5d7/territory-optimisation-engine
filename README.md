@@ -90,6 +90,8 @@ Each use case has a full step-by-step playbook in **[use-cases.md](use-cases.md)
 | M&A and segmentation change | New accounts or new role definitions | A reasoned integration of the new book |
 | Quarterly review cycle | Recurring planning cadence | An audit trail of proposals and manager decisions |
 
+For a concrete walkthrough, see the **[user-story example: redesigning a district](use-cases.md#user-story-example-redesigning-a-district)**. It includes sample inputs, three scenarios and decision gates.
+
 ## How to read the results
 
 Read in this order, because each layer tells you whether to trust the next.
@@ -181,7 +183,7 @@ An Excel workbook with two sheets, `Accounts` and `AE_Roles`.
 
 | Sheet | Columns |
 |---|---|
-| `Accounts` | Account ID, Account Name, Region, Product Focus, Current AE, Annual Revenue, Estimated Effort (Hours), Status, Tier, Money Map, Vertical, Locked |
+| `Accounts` | Account ID, Account Name, Region, Product Focus, Current AE, Annual Revenue, Estimated Effort (Hours), Status, Tier, Spend Map, Vertical, Locked |
 | `AE_Roles` | AE Name, Role, Region Alignment, Is_AI_Specialist |
 
 Column names must match exactly. The last notebook cell downloads a blank template.

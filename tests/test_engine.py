@@ -36,6 +36,8 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(len(aes), 3)
         self.assertEqual(len(accounts), 6)
         self.assertEqual(set(aes["Role"]), set(ENGINE["KNOWN_ROLES"]))
+        self.assertIn("Spend Map", accounts.columns)
+        self.assertNotIn("Money Map", accounts.columns)
 
     def test_invalid_solver_settings_fail_early(self):
         invalid = {
