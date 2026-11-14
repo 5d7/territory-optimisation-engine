@@ -7,7 +7,7 @@
 
 **A constraint-based territory planning engine for revenue operations.** It reviews account ownership region by region, proposes which accounts move into or out of each AE's territory, enforces your business rules, and explains every move in plain English. The result is a repeatable, auditable planning cycle instead of a once-a-year spreadsheet exercise.
 
-![Dashboard preview](dashboard-preview.png)
+[![Dashboard preview](https://raw.githubusercontent.com/5d7/territory-optimisation-engine/main/dashboard-preview.png)](https://github.com/5d7/territory-optimisation-engine/blob/main/dashboard-preview.png)
 
 *Demo run on randomly generated data: 2,550 accounts, 30 AEs, 3 regions. The synthetic starting point is deliberately messy, so the move count is high. Real portfolios are tuned with the stability and move-limit controls described below.*
 
