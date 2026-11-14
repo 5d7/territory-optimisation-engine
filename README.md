@@ -22,10 +22,9 @@
 7. [Tools and API potential](#tools-and-api-potential)
 8. [Architecture](#architecture)
 9. [Quick start](#quick-start)
-10. [Synthetic Salesforce data generator](#synthetic-salesforce-data-generator)
-11. [Input format](#input-format)
-12. [Governance, data and privacy](#governance-data-and-privacy)
-13. [Roadmap](#roadmap)
+10. [Input format](#input-format)
+11. [Governance, data and privacy](#governance-data-and-privacy)
+12. [Roadmap](#roadmap)
 
 ## Why this exists
 
@@ -177,69 +176,6 @@ jupyter notebook Territory_Optimisation_Engine_v2.ipynb
 ```
 
 To call the engine from code, see the tested example in [integrations.md](integrations.md#calling-the-engine-from-code).
-
-## Synthetic Salesforce data generator
-
-`salesforce_synthetic_data.py` creates large, fictional CRM datasets locally with no API key. It is suitable for the 2,000, 5,000 and 15,000-row test files that free online generators often cannot produce. Presets use common fields from Salesforce's official [Account](https://developer.salesforce.com/docs/platform/object-reference/references/standard-objects/object-account.html) and [Opportunity](https://developer.salesforce.com/docs/platform/object-reference/references/standard-objects/object-opportunity.html) references, with equivalent practical subsets for Contact, Lead, Case and User.
-
-Generate 5,000 opportunities using the preset fields:
-
-```bash
-python salesforce_synthetic_data.py --object opportunity --rows 5000
-```
-
-Generate 15,000 EMEA and APAC accounts:
-
-```bash
-python salesforce_synthetic_data.py \
-  --object account \
-  --rows 15000 \
-  --regions EMEA,APAC
-```
-
-Paste your own API names or friendly column labels. Separators can be commas, tabs, semicolons or new lines:
-
-```bash
-python salesforce_synthetic_data.py \
-  --object opportunity \
-  --rows 2000 \
-  --columns 'Id,Opportunity Name,Stage,Amount,Close Date,Closed,Won,Closed Won Amount,Sales Region,Sales District'
-```
-
-For a long copied list, paste it into `columns.txt` and run:
-
-```bash
-python salesforce_synthetic_data.py --object opportunity --rows 5000 --columns-file columns.txt
-```
-
-Useful controls:
-
-| Need | Example |
-|---|---|
-| See available presets | `python salesforce_synthetic_data.py --list-presets` |
-| See an object's preset fields | `python salesforce_synthetic_data.py --list-fields opportunity` |
-| Select districts | `--regions EMEA --districts UKI,DACH` |
-| Set stage names | `--stages 'Discovery,Validation,Proposal,Closed Won,Closed Lost'` |
-| Set outcome mix | `--won-rate 0.22 --lost-rate 0.18` |
-| Repeat the same data | `--seed 42` |
-| Write JSON Lines | `--format jsonl --output synthetic_opportunities.jsonl` |
-| Customize all picklists | `--config salesforce_generator_config.example.json` |
-
-Opportunity rows are internally consistent: `StageName` drives `Probability`, `IsClosed`, `IsWon`, forecast category, close date and the derived closed-won, closed-lost and open-pipeline amounts. Salesforce-style IDs are unique within each generated file. Unknown custom columns receive sensible values based on names such as `Date`, `Amount`, `Email`, `Phone`, `Count`, `Is...` and `...Id`.
-
-### Optional Groq enrichment
-
-An LLM is unnecessary for normal test data. If you want richer fictional descriptions or next steps, set `GROQ_API_KEY` and enrich only those selected columns:
-
-```bash
-python salesforce_synthetic_data.py \
-  --object opportunity \
-  --rows 5000 \
-  --groq-fields Description,NextStep \
-  --groq-limit 100
-```
-
-Only the first 100 rows are sent by default, protecting rate limits and keeping large-file generation inexpensive. The integration uses Groq's documented [OpenAI-compatible endpoint](https://console.groq.com/docs/openai); all structural CRM fields remain locally generated and deterministic.
 
 ## Input format
 

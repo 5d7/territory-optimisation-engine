@@ -3,5 +3,3 @@ __pycache__/
 .venv/
 .DS_Store
 *.xlsx
-synthetic_*.csv
-synthetic_*.jsonl
