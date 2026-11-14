@@ -1,74 +1,143 @@
-# Business use cases for revenue operations leaders
+# Business use cases: step-by-step playbooks
 
-The engine is most valuable where territory decisions are frequent, contested, or need to be defended. Each scenario below follows the same pattern: the situation, what you configure, and what you take to the room.
+Each playbook follows the same shape: the situation, the setup, the steps, what to read, and what to take to the decision-makers. Setting names refer to the Settings cell in the notebook.
+
+General rule: **start in soft mode**, read the coverage card and the rule scorecard before the move list, and treat the move count as a deliberate decision.
+
+---
 
 ## 1. Annual territory and coverage planning
 
-**Situation:** The new fiscal year needs every account assigned, workloads balanced, and specialist coverage in place before quotas are released.
+**Situation.** The new fiscal year needs every account assigned, workloads balanced and specialist coverage in place before quotas are released.
 
-**How to use it:** Load the full account and AE roster, set role limits and the workload band, and run in soft mode to get a complete plan with a rule scorecard.
+**Setup.** Full account export and the AE roster for all regions. Soft mode. Defaults for role limits, then adjust to the new year's policy.
 
-**What you take to the room:** A coverage figure, the list of rules still outside tolerance and by how much, and a reasoned move for every account that changes hands.
+**Steps**
+1. Export accounts and AEs into the two-sheet workbook and run the data-quality checks.
+2. Fix any blocking errors (duplicate IDs, missing columns, unknown AE names).
+3. Set role limits, the workload band and portfolio caps to match the new plan year.
+4. Run the review with a generous solve time per region.
+5. Read coverage, then region status, then the rule scorecard.
+6. Iterate on the one or two rules that remain breached. Raise their weight or relax their limit, and rerun.
+7. Export the workbook and send the Moves sheet to regional sales leaders.
+8. Collect Approve, Reject and Lock decisions, then rerun to produce the final plan.
+
+**Take to leadership.** Coverage percentage, the rules still outside tolerance and by how much, and a reasoned move for every account that changes hands.
+
+---
 
 ## 2. Mid-year rebalancing with minimal disruption
 
-**Situation:** Pipeline has shifted, some reps are saturated, and leadership wants a fix without a reorganisation.
+**Situation.** Pipeline has shifted and some reps are saturated, but leadership wants a fix, not a reorganisation.
 
-**How to use it:** Raise the stability bonus and set a cap on the percentage of accounts that can move, plus per-AE in and out limits. Lock accounts that are mid-negotiation.
+**Setup.** Current ownership as the starting point. Mark in-flight negotiations as `Locked`.
 
-**What you take to the room:** The smallest set of moves that brings reps back inside the allowed band, with locked deals untouched.
+**Steps**
+1. Update the accounts file with current owners and the `Locked` flag for sensitive deals.
+2. Raise `stability_bonus` so keeping an account with its owner is strongly preferred.
+3. Optionally set `max_moves_pct`, `max_in_per_ae` and `max_out_per_ae` to cap the disruption.
+4. Run the review and check coverage first, because tight caps can leave accounts unassigned.
+5. Compare against a looser scenario using the scenario comparison cell.
+6. Choose the setting that restores the band with the fewest moves.
 
-## 3. New hire onboarding and attrition coverage
+**Take to leadership.** The smallest set of moves that brings reps back inside the band, with locked deals untouched.
 
-**Situation:** A rep leaves or a new cohort starts, and their accounts need a home, or a fair starting book.
+---
 
-**How to use it:** Update the AE roster, run the review, and inspect the moves into and out of the affected territories.
+## 3. Attrition and new-hire coverage
 
-**What you take to the room:** A coverage plan that spreads orphaned accounts fairly instead of dumping them on the nearest manager.
+**Situation.** A rep leaves or a new cohort starts, and their accounts need a home, or a fair starting book.
 
-## 4. Specialist alignment (for example AI-focused deals)
+**Steps**
+1. Update the AE roster: remove departed reps, add new hires with their role and region.
+2. Leave the departed rep's name as the Current AE on their accounts. The engine detects that the owner is no longer available and reassigns those accounts, labelling them "Reassigned (owner unavailable)" in the Moves sheet.
+3. Run the review.
+4. Open the AE Summary to see accounts and effort per AE after the plan.
+5. Check the new hire's starting book against the Tier 3 minimum and the workload band.
 
-**Situation:** A product line needs specialist coverage, and accounts in that line sit with generalists.
+Note that these reassignments cannot be rejected by managers, because every account must have an owner.
 
-**How to use it:** Enable the specialist-only rule and review the scorecard line for it before and after.
+**Take to leadership.** A coverage plan that spreads orphaned accounts fairly instead of defaulting to the nearest manager.
 
-**What you take to the room:** A clear before and after count of accounts covered by specialists, with the explanation attached to each move.
+---
 
-## 5. Portfolio risk balancing
+## 4. Specialist alignment
 
-**Situation:** Some reps hold too many at-risk accounts while others hold too many high-growth accounts with heavy effort.
+**Situation.** A product line needs specialist coverage, and those accounts sit with generalists.
 
-**How to use it:** Set caps on Burn Risk and Growth Engine accounts per AE and an effort cap for growth accounts.
+**Steps**
+1. Flag specialists in `AE_Roles` with `Is_AI_Specialist` and mark focus accounts in `Product Focus`.
+2. Keep `ai_specialists_only` on.
+3. Run the review.
+4. Read the matching scorecard line: how many AEs held non-aligned accounts before, and after.
+5. Spot-check the move reasons for the specialist moves.
 
-**What you take to the room:** Evidence that risk and growth workload is spread deliberately, not by accident of history.
+**Take to leadership.** A before and after count of accounts covered by specialists, with the reason on each move.
+
+---
+
+## 5. Portfolio risk and growth balancing
+
+**Situation.** Some reps hold too many at-risk accounts while others carry heavy growth accounts.
+
+**Steps**
+1. Make sure each account has a Spend Map value (for example Burn Risk, Growth Engine, Steady State).
+2. Set `max_burn_risk_per_ae`, `max_growth_engines` and `growth_engine_effort_cap`.
+3. Choose `growth_cap_basis` to count total effort or growth-only effort against the cap.
+4. Run the review and read the Burn Risk and Growth Engine columns in the AE Summary.
+
+**Take to leadership.** Evidence that risk and growth workload is spread deliberately, not by accident of history.
+
+---
 
 ## 6. Scenario analysis for leadership
 
-**Situation:** Sales leadership asks "what if we cap accounts at 120 instead of 150?" or "what if we allow more churn?".
+**Situation.** Leadership asks "what if we cap accounts at 120?" or "what if we allow less churn?".
 
-**How to use it:** Use the scenario comparison cell to rerun with changed settings and compare coverage, moves, and breaches side by side.
+**Steps**
+1. Run the baseline review.
+2. In the scenario cell, edit the dictionary to define two or three alternative settings.
+3. Run the scenarios with a short solve time per scenario for a fast comparison.
+4. Compare coverage, moves and breaches side by side.
+5. Re-run the chosen scenario with the full solve time before presenting.
 
-**What you take to the room:** A concrete trade-off between disruption and rule compliance, quantified, not argued.
+**Take to leadership.** A quantified trade-off between disruption and rule compliance, instead of an argument.
+
+---
 
 ## 7. M&A and segmentation changes
 
-**Situation:** An acquisition or a segmentation change adds accounts or changes which reps may hold them.
+**Situation.** An acquisition or segmentation change adds accounts or changes which roles may hold them.
 
-**How to use it:** Add the new accounts and role definitions to the input workbook and rerun by region.
+**Steps**
+1. Append the new accounts to the Accounts sheet, or mark them with a blank owner.
+2. Update `Role` values in `AE_Roles` for any new role definitions.
+3. Run the review by region.
+4. Check the Unassigned sheet for accounts that could not be placed, and why.
 
-**What you take to the room:** A fully reasoned integration of the new book into existing territories.
+**Take to leadership.** A reasoned integration of the new book into existing territories.
 
-## 8. A repeatable review cycle
+---
 
-**Situation:** Territory decisions are revisited every quarter, and nobody remembers why last quarter's choices were made.
+## 8. Quarterly review cycle
 
-**How to use it:** Send the workbook to managers, collect approve, reject, and lock decisions, and use the reviewed workbook as the next cycle's input.
+**Situation.** Territory decisions are revisited every quarter, and nobody remembers why the last choices were made.
 
-**What you take to the room:** An audit trail of proposals, manager decisions, and rule outcomes over time.
+**Steps**
+1. Run the review and send the workbook to managers.
+2. Managers set Approve or Reject on each move in the Manager Decision column (blank counts as Approve) and put `Yes` in Lock next cycle for accounts to freeze.
+3. Upload the reviewed workbook to the "next cycle" cell. It builds `Next_Cycle_Input.xlsx`, where approved moves become the new Current AE and rejected moves stay with the current AE and are locked.
+4. Point the input file at that workbook and rerun with demo data switched off. Headcount changes, new accounts and revised ratings flow through.
+5. Archive each cycle's workbook. The Settings and Run Summary sheets make every run reproducible.
+
+**Take to leadership.** An audit trail of proposals, manager decisions and rule outcomes over time.
+
+---
 
 ## Good operating practice
 
-- Start in **soft mode** to get a complete plan, then tighten toward hard mode where rules are truly non-negotiable.
-- Treat the move count as a decision, not a by-product. Use stability and move-limit controls to match the organisation's appetite for change.
-- Review the **rule scorecard** before the move list. It tells you which rules the plan could not fully satisfy.
-- Keep manager approvals in the workbook so each cycle builds on the last.
+- Treat **coverage** as a gate. A tidy scorecard with unassigned accounts is not a finished plan.
+- Fix the `random_seed` when comparing scenarios so differences come from settings, not from chance.
+- Give the solver enough time before judging the plan. A `FEASIBLE` region may improve with more time.
+- Keep manager decisions in the workbook so each cycle builds on the last.
+- Never commit real input or output workbooks to a public repository.
