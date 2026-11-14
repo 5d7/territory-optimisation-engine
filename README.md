@@ -7,7 +7,7 @@
 
 **A constraint-based territory planning engine for revenue operations.** It reviews account ownership region by region, proposes which accounts move into or out of each AE's territory, enforces your business rules, and explains every move in plain English. The result is a repeatable, auditable planning cycle instead of a once-a-year spreadsheet exercise.
 
-![Dashboard preview](docs/dashboard-preview.png)
+![Dashboard preview](dashboard-preview.png)
 
 *Demo run on randomly generated data: 2,550 accounts, 30 AEs, 3 regions. The synthetic starting point is deliberately messy, so the move count is high. Real portfolios are tuned with the stability and move-limit controls described below.*
 
@@ -77,7 +77,7 @@ flowchart LR
 
 ## Business use cases
 
-Each use case has a full step-by-step playbook in **[docs/use-cases.md](docs/use-cases.md)**.
+Each use case has a full step-by-step playbook in **[use-cases.md](use-cases.md)**.
 
 | Use case | Trigger | Outcome you take to leadership |
 |---|---|---|
@@ -116,7 +116,7 @@ In my own test runs, a shorter solve and a higher stability bonus both lowered c
 
 ## Tools and API potential
 
-The engine works today through Excel in and Excel out, in Colab or locally. It is also designed to sit inside a larger revenue-operations stack. Full detail, with code, is in **[docs/integrations.md](docs/integrations.md)**.
+The engine works today through Excel in and Excel out, in Colab or locally. It is also designed to sit inside a larger revenue-operations stack. Full detail, with code, is in **[integrations.md](integrations.md)**.
 
 | Layer | Potential integration | What it would unlock | Status |
 |---|---|---|---|
@@ -173,7 +173,7 @@ pip install -r requirements.txt
 jupyter notebook Territory_Optimisation_Engine_v2.ipynb
 ```
 
-To call the engine from code, see the tested example in [docs/integrations.md](docs/integrations.md#calling-the-engine-from-code).
+To call the engine from code, see the tested example in [integrations.md](integrations.md#calling-the-engine-from-code).
 
 ## Input format
 
@@ -181,7 +181,7 @@ An Excel workbook with two sheets, `Accounts` and `AE_Roles`.
 
 | Sheet | Columns |
 |---|---|
-| `Accounts` | Account ID, Account Name, Region, Product Focus, Current AE, Annual Revenue, Estimated Effort (Hours), Status, Tier, Spend Map, Vertical, Locked |
+| `Accounts` | Account ID, Account Name, Region, Product Focus, Current AE, Annual Revenue, Estimated Effort (Hours), Status, Tier, Money Map, Vertical, Locked |
 | `AE_Roles` | AE Name, Role, Region Alignment, Is_AI_Specialist |
 
 Column names must match exactly. The last notebook cell downloads a blank template.
