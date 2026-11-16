@@ -1,30 +1,12 @@
-import json
 import unittest
-from pathlib import Path
 
-
-ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = ROOT / "Territory_Optimisation_Engine_v2.ipynb"
-
-
-def load_engine():
-    notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-    source = next(
-        "".join(cell["source"])
-        for cell in notebook["cells"]
-        if cell["cell_type"] == "code"
-        and "TERRITORY OPTIMISATION ENGINE v2" in "".join(cell["source"])
-    )
-    namespace = {"__name__": "territory_optimisation_engine"}
-    exec(compile(source, str(NOTEBOOK), "exec"), namespace)
-    return namespace
-
-
-ENGINE = load_engine()
-Config = ENGINE["Config"]
-make_demo_data = ENGINE["make_demo_data"]
-prepare_data = ENGINE["prepare_data"]
-run_territory_review = ENGINE["run_territory_review"]
+import territory_optimisation as engine
+from territory_optimisation import (
+    Config,
+    make_demo_data,
+    prepare_data,
+    run_territory_review,
+)
 
 
 class EngineTests(unittest.TestCase):
@@ -35,7 +17,7 @@ class EngineTests(unittest.TestCase):
 
         self.assertEqual(len(aes), 3)
         self.assertEqual(len(accounts), 6)
-        self.assertEqual(set(aes["Role"]), set(ENGINE["KNOWN_ROLES"]))
+        self.assertEqual(set(aes["Role"]), set(engine.engine.KNOWN_ROLES))
         self.assertIn("Spend Map", accounts.columns)
         self.assertNotIn("Money Map", accounts.columns)
 

@@ -171,8 +171,17 @@ flowchart TB
 To run locally:
 
 ```bash
-pip install -r requirements.txt
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -e ".[notebook]"
 jupyter notebook Territory_Optimisation_Engine_v2.ipynb
+```
+
+The solver is also available as a normal Python package:
+
+```python
+from territory_optimisation import Config, run_territory_review
+
+result = run_territory_review(Config(use_demo_data=False), accounts, ae_roles)
 ```
 
 To call the engine from code, see the tested example in [integrations.md](integrations.md#calling-the-engine-from-code).
