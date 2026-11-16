@@ -7,7 +7,7 @@
 
 **A constraint-based territory planning engine for revenue operations.** It reviews account ownership region by region, proposes which accounts move into or out of each AE's territory, enforces your business rules, and explains every move in plain English. The result is a repeatable, auditable planning cycle instead of a once-a-year spreadsheet exercise.
 
-![Dashboard preview](docs/dashboard-preview.png)
+[![Dashboard preview](https://raw.githubusercontent.com/5d7/territory-optimisation-engine/main/dashboard-preview.png)](https://github.com/5d7/territory-optimisation-engine/blob/main/dashboard-preview.png)
 
 *Demo run on randomly generated data: 2,550 accounts, 30 AEs, 3 regions. The synthetic starting point is deliberately messy, so the move count is high. Real portfolios are tuned with the stability and move-limit controls described below.*
 
@@ -77,7 +77,7 @@ flowchart LR
 
 ## Business use cases
 
-Each use case has a full step-by-step playbook in **[docs/use-cases.md](docs/use-cases.md)**.
+Each use case has a full step-by-step playbook in **[use-cases.md](use-cases.md)**.
 
 | Use case | Trigger | Outcome you take to leadership |
 |---|---|---|
@@ -89,6 +89,8 @@ Each use case has a full step-by-step playbook in **[docs/use-cases.md](docs/use
 | Scenario analysis | "What if the account cap changes?" | A quantified trade-off between disruption and compliance |
 | M&A and segmentation change | New accounts or new role definitions | A reasoned integration of the new book |
 | Quarterly review cycle | Recurring planning cadence | An audit trail of proposals and manager decisions |
+
+For a concrete walkthrough, see the **[user-story example: redesigning a district](use-cases.md#user-story-example-redesigning-a-district)**. It includes sample inputs, three scenarios and decision gates.
 
 ## How to read the results
 
@@ -116,7 +118,7 @@ In my own test runs, a shorter solve and a higher stability bonus both lowered c
 
 ## Tools and API potential
 
-The engine works today through Excel in and Excel out, in Colab or locally. It is also designed to sit inside a larger revenue-operations stack. Full detail, with code, is in **[docs/integrations.md](docs/integrations.md)**.
+The engine works today through Excel in and Excel out, in Colab or locally. It is also designed to sit inside a larger revenue-operations stack. Full detail, with code, is in **[integrations.md](integrations.md)**.
 
 | Layer | Potential integration | What it would unlock | Status |
 |---|---|---|---|
@@ -169,11 +171,20 @@ flowchart TB
 To run locally:
 
 ```bash
-pip install -r requirements.txt
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -e ".[notebook]"
 jupyter notebook Territory_Optimisation_Engine_v2.ipynb
 ```
 
-To call the engine from code, see the tested example in [docs/integrations.md](docs/integrations.md#calling-the-engine-from-code).
+The solver is also available as a normal Python package:
+
+```python
+from territory_optimisation import Config, run_territory_review
+
+result = run_territory_review(Config(use_demo_data=False), accounts, ae_roles)
+```
+
+To call the engine from code, see the tested example in [integrations.md](integrations.md#calling-the-engine-from-code).
 
 ## Input format
 

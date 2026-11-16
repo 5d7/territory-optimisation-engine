@@ -6,6 +6,74 @@ General rule: **start in soft mode**, read the coverage card and the rule scorec
 
 ---
 
+## User-story example: redesigning a district
+
+> **As the EMEA RevOps lead, I want to redesign the EMEA Central district after adding a ninth AE, so that workload and growth opportunities are distributed fairly without disrupting strategic deals already in flight.**
+
+### Starting situation
+
+- 720 accounts are currently shared by eight AEs; a ninth AE starts next month.
+- Two AEs are more than 20% above the district's average workload.
+- Growth Engine and Burn Risk accounts are concentrated with a small number of AEs.
+- 18 accounts have late-stage opportunities and must stay with their current owner.
+- Leadership will accept at most 15% of currently owned accounts moving in this planning cycle.
+
+### Prepare the input
+
+1. Set `Region` to `EMEA Central` on the district's accounts and set the same value in `Region Alignment` for all nine AEs.
+2. Populate `Spend Map` with values such as `Growth Engine`, `Burn Risk`, `Steady State` and `Long Shot`.
+3. Set `Locked` to `Yes` for the 18 in-flight strategic deals.
+4. Leave the new AE with no current accounts; the engine can build their starting book.
+5. Run the baseline once and resolve all blocking data-quality errors before comparing alternatives.
+
+The engine never assigns an account across `Region` values. If the redesign changes district boundaries—for example, splitting `EMEA Central` into `EMEA Central North` and `EMEA Central South`—prepare one input workbook per proposed boundary design and compare the exported summaries. Use the scenario cell below when the account-to-region boundary stays fixed and only planning rules change.
+
+### Compare three planning scenarios
+
+Replace the example dictionary in the scenario cell with:
+
+```python
+scenarios = {
+    "Low-disruption rebalance": dict(
+        allowed_workload_variance_pct=20,
+        stability_bonus=2500,
+        max_moves_pct=10,
+        max_in_per_ae=20,
+        max_out_per_ae=20,
+    ),
+    "Balanced redesign": dict(
+        allowed_workload_variance_pct=15,
+        stability_bonus=1500,
+        max_moves_pct=15,
+        max_in_per_ae=30,
+        max_out_per_ae=30,
+    ),
+    "Workload-first redesign": dict(
+        allowed_workload_variance_pct=10,
+        stability_bonus=500,
+        max_moves_pct=25,
+    ),
+}
+```
+
+Run these with a short solve time for comparison, then rerun the preferred scenario with the normal solve time before publishing it.
+
+### Decision gates
+
+Choose a plan only if:
+
+1. Coverage is 100%, or every unassigned account has an explicitly accepted reason.
+2. No locked account moves.
+3. The move rate stays within leadership's agreed limit.
+4. Remaining workload or Spend Map breaches are visible in the scorecard and have an owner who accepts them.
+5. Regional leaders review the Moves sheet and record Approve, Reject or Lock decisions.
+
+In this user story, the **Balanced redesign** is the first candidate because its 15% move cap matches leadership's limit. It is not automatically the winner: if it leaves material workload breaches, compare the specific extra moves required by the workload-first scenario before making the trade-off.
+
+**Take to leadership.** A one-page comparison of coverage, move rate, remaining rule breaches and workload spread, followed by the proposed Moves sheet with a reason for every ownership change.
+
+---
+
 ## 1. Annual territory and coverage planning
 
 **Situation.** The new fiscal year needs every account assigned, workloads balanced and specialist coverage in place before quotas are released.
